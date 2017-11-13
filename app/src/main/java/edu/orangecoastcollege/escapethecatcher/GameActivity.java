@@ -29,7 +29,7 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
     final int FLING_THRESHOLD = 500;
 
     //BOARD INFORMATION
-    final int SQUARE = 170;
+    final int SQUARE = 180;
     final int OFFSET = 5;
     final int COLS = 8;
     final int ROWS = 8;
