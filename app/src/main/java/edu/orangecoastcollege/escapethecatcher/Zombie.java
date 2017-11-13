@@ -1,35 +1,68 @@
 package edu.orangecoastcollege.escapethecatcher;
 
-public class Zombie {
+/**
+ * This class represents a zombie enemy on the game board.
+ *
+ * @author Michael Paulding
+ */
+public class Zombie
+{
 
     private int mRow;
     private int mCol;
 
-    public void move(int[][] gameBoard, int playerCol, int playerRow) {
-        if (mCol < playerCol && gameBoard[mRow][mCol + 1] == BoardCodes.EMPTY) {
-            mCol++;
-        } else if (mCol > playerCol && gameBoard[mRow][mCol - 1] == BoardCodes.EMPTY) {
-            mCol--;
-        } else if (mRow < playerRow && gameBoard[mRow + 1][mCol] == BoardCodes.EMPTY) {
-            mRow++;
-        } else if (mRow > playerRow && gameBoard[mRow - 1][mCol] == BoardCodes.EMPTY) {
-            mRow--;
-        }
+    /**
+     * Moves the <code>Zombie</code> object in the game board towards the <code>Player</code> object.
+     *
+     * @param gameBoard The game board that the <code>Zombie</code> object moves on.
+     * @param playerCol The column position of the <code>Player</code> object in the game board.
+     * @param playerRow The row position of the <code>Player</code> object in the game board.
+     */
+    public void move(int[][] gameBoard, int playerCol, int playerRow)
+    {
+        if (mCol < playerCol && gameBoard[mRow][mCol + 1] != BoardCodes.OBSTACLE) mCol++;
+        else if (mCol > playerCol && gameBoard[mRow][mCol - 1] != BoardCodes.OBSTACLE) mCol--;
+        else if (mRow < playerRow && gameBoard[mRow + 1][mCol] != BoardCodes.OBSTACLE) mRow++;
+        else if (mRow > playerRow && gameBoard[mRow - 1][mCol] == BoardCodes.OBSTACLE) mRow--;
     }
 
-    public void setRow(int row) {
+    /**
+     * Sets the row position of the <code>Zombie</code> object in the game board.
+     *
+     * @param row The row position of the <code>Zombie</code> object in the game board.
+     */
+    public void setRow(int row)
+    {
         mRow = row;
     }
 
-    public int getRow() {
+    /**
+     * Gets the row position of the <code>Zombie</code> object in the game board.
+     *
+     * @return The row position of the <code>Zombie</code> object in the game board.
+     */
+    public int getRow()
+    {
         return mRow;
     }
 
-    public void setCol(int col) {
+    /**
+     * Sets the column position of the <code>Zombie</code> object in the game board.
+     *
+     * @param col The column position of the <code>Zombie</code> object in the game board.
+     */
+    public void setCol(int col)
+    {
         mCol = col;
     }
 
-    public int getCol() {
+    /**
+     * Gets the column position of the <code>Zombie</code> object in the game board.
+     *
+     * @return The column position of the <code>Zombie</code> object in the game board.
+     */
+    public int getCol()
+    {
         return mCol;
     }
 

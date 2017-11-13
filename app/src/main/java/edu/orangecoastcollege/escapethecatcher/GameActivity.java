@@ -13,7 +13,14 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * This activity launches the game by creating the game board and characters and defining the
+ * player's and enemy's in-game movements.
+ *
+ * @author Derek Tran
+ * @version 1.0
+ * @since November 7, 2017
+ */
 public class GameActivity extends AppCompatActivity implements GestureDetector.OnGestureListener{
 
     private GestureDetector gestureDetector;
