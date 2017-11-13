@@ -29,7 +29,7 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
     final int FLING_THRESHOLD = 500;
 
     //BOARD INFORMATION
-    final int SQUARE = 200;
+    final int SQUARE = 170;
     final int OFFSET = 5;
     final int COLS = 8;
     final int ROWS = 8;
@@ -215,7 +215,7 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
         // If x is negative, move player left.  Else if x is positive, move player right.
         // If y is negative, move player down.  Else if y is positive, move player up.
         if (absX >= absY) direction = (velocityX < 0) ? "LEFT" : "RIGHT";
-        else direction = (velocityY < 0) ? "DOWN" : "UP";
+        else direction = (velocityY < 0) ? "UP" : "DOWN";
 
         player.move(gameBoard, direction);
         // Move the image view as well

@@ -29,16 +29,16 @@ public class Player
         switch (direction)
         {
             case "UP":
-                if (gameBoard[mRow - 1][mCol] == BoardCodes.EMPTY) mRow--;
+                if (gameBoard[mRow - 1][mCol] != BoardCodes.OBSTACLE) mRow--;
                 break;
             case "DOWN":
-                if (gameBoard[mRow + 1][mCol] == BoardCodes.EMPTY) mRow++;
+                if (gameBoard[mRow + 1][mCol] != BoardCodes.OBSTACLE) mRow++;
                 break;
             case "LEFT":
-                if (gameBoard[mRow][mCol - 1] == BoardCodes.EMPTY) mCol--;
+                if (gameBoard[mRow][mCol - 1] != BoardCodes.OBSTACLE) mCol--;
                 break;
             case "RIGHT":
-                if (gameBoard[mRow][mCol + 1] == BoardCodes.EMPTY) mCol++;
+                if (gameBoard[mRow][mCol + 1] != BoardCodes.OBSTACLE) mCol++;
                 break;
         }
 
