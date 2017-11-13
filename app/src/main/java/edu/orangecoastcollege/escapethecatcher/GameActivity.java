@@ -21,28 +21,26 @@ import java.util.List;
  * @version 1.0
  * @since November 7, 2017
  */
-public class GameActivity extends AppCompatActivity implements GestureDetector.OnGestureListener{
-
+public class GameActivity extends AppCompatActivity implements GestureDetector.OnGestureListener
+{
     private GestureDetector gestureDetector;
 
     //FLING THRESHOLD VELOCITY
     final int FLING_THRESHOLD = 500;
 
     //BOARD INFORMATION
-    final int SQUARE = 170;
+    final int SQUARE = 200;
     final int OFFSET = 5;
     final int COLS = 8;
     final int ROWS = 8;
-    final int gameBoard[][] = {
-            {1, 1, 1, 1, 1, 1, 1, 1},
-            {1, 2, 2, 1, 2, 2, 1, 1},
-            {1, 2, 2, 2, 2, 2, 2, 1},
-            {1, 2, 1, 2, 2, 2, 2, 1},
-            {1, 2, 2, 2, 2, 2, 1, 1},
-            {1, 2, 2, 1, 2, 2, 2, 3},
-            {1, 2, 1, 2, 2, 2, 2, 1},
-            {1, 1, 1, 1, 1, 1, 1, 1}
-    };
+    final int gameBoard[][] = {{1, 1, 1, 1, 1, 1, 1, 1},
+                               {1, 2, 2, 1, 2, 2, 1, 1},
+                               {1, 2, 2, 2, 2, 2, 2, 1},
+                               {1, 2, 1, 2, 2, 2, 2, 1},
+                               {1, 2, 2, 2, 2, 2, 1, 1},
+                               {1, 2, 2, 1, 2, 2, 2, 3},
+                               {1, 2, 1, 2, 2, 2, 2, 1},
+                               {1, 1, 1, 1, 1, 1, 1, 1}};
     private List<ImageView> allGameObjects;
     private Player player;
     private Zombie zombie;
@@ -63,8 +61,16 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
 
     private LayoutInflater layoutInflater;
 
+    /**
+     * Initializes <code>GameActivity</code> by inflating its UI.
+     *
+     * @param savedInstanceState Bundle containing the data it recently supplied in
+     *                           onSaveInstanceState(Bundle) if activity was reinitialized after
+     *                           being previously shut down. Otherwise it is null.
+     */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         activityGameRelativeLayout = (RelativeLayout) findViewById(R.id.activity_game);
@@ -79,10 +85,13 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
         gestureDetector = new GestureDetector(this, this);
 
         startNewGame();
-
     }
 
-    private void startNewGame() {
+    /**
+     * Resets the game board and character positions.
+     */
+    private void startNewGame()
+    {
         //TASK 1:  CLEAR THE BOARD (ALL IMAGE VIEWS)
         /*
         for (int i = 0; i < allGameObjects.size(); i++) {
@@ -90,8 +99,7 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
             activityGameRelativeLayout.removeView(visualObj);
         }
         */
-        for (ImageView iv : allGameObjects)
-            activityGameRelativeLayout.removeView(iv);
+        for (ImageView iv : allGameObjects) activityGameRelativeLayout.removeView(iv);
         allGameObjects.clear();
 
         //TASK 2:  REBUILD THE  BOARD
@@ -105,18 +113,22 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
         lossesTextView.setText(getString(R.string.losses, losses));
     }
 
-    private void buildGameBoard() {
-        // TODO: Inflate the entire game board (obstacles and exit)
-        // TODO: (everything but the player and zombie)
+    /**
+     * Creates the game board.
+     */
+    private void buildGameBoard()
+    {
+        // Inflate the entire game board (obstacles and exit)
+        // (everything but the player and zombie)
 
         // Loop through each
         ImageView viewToInflate;
-        for(int row = 0; row < ROWS; row++)
+        for (int row = 0; row < ROWS; row++)
         {
-            for(int col = 0; col < COLS; col++)
+            for (int col = 0; col < COLS; col++)
             {
                 viewToInflate = null;
-                switch(gameBoard[row][col])
+                switch (gameBoard[row][col])
                 {
                     case BoardCodes.OBSTACLE:
                         viewToInflate = (ImageView) layoutInflater.inflate(R.layout.obstacle_layout, null);
@@ -142,9 +154,13 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
 
     }
 
-    private void createZombie() {
-        // TODO: Determine where to place the Zombie (at game start)
-        // TODO: Then, inflate the zombie layout
+    /**
+     * Sets the zombie position on the game board.
+     */
+    private void createZombie()
+    {
+        // Determine where to place the Zombie (at game start)
+        // Then, inflate the zombie layout
         int row = 2;
         int col = 4;
         zombieImageView = (ImageView) layoutInflater.inflate(R.layout.zombie_layout, null);
@@ -159,9 +175,13 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
         zombie.setCol(col);
     }
 
-    private void createPlayer() {
-        // TODO: Determine where to place the Player (at game start)
-        // TODO: Then, inflate the player layout
+    /**
+     * Sets the player position on the game board.
+     */
+    private void createPlayer()
+    {
+        // Determine where to place the Player (at game start)
+        // Then, inflate the player layout
         int row = 1;
         int col = 1;
         playerImageView = (ImageView) layoutInflater.inflate(R.layout.player_layout, null);
@@ -176,89 +196,127 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
         player.setCol(col);
     }
 
-
-    private void movePlayer(float velocityX, float velocityY) {
-        // TODO: This method gets called by the onFling event
-        // TODO: Be sure to implement the move method in the Player (model) class
+    /**
+     * Moves the player based on the fling gesture from the user.
+     *
+     * @param velocityX The fling velocity in the X direction.
+     * @param velocityY The fling velocity in the Y direction.
+     */
+    private void movePlayer(float velocityX, float velocityY)
+    {
+        // This method gets called by the onFling event
+        // Be sure to implement the move method in the Player (model) class
 
         float absX = Math.abs(velocityX);
         float absY = Math.abs(velocityY);
-        String direction = "UNKNOWN";
-        // x is bigger (move left or right)
-        if (absX >= absY)
-        {
-            if (velocityX < 0) direction = "LEFT";
-            else direction = "RIGHT";
-        }
-        else
-        {
-            if (velocityY < 0) direction = "UP";
-            else direction = "DOWN";
-        }
+        String direction;
 
-        if (!direction.equals("UNKNOWN"))
-        {
-            player.move(gameBoard, direction);
-            // Move the image view as well
-            playerImageView.setX(player.getCol() * SQUARE + OFFSET);
-            playerImageView.setY(player.getRow() * SQUARE + OFFSET);
-            // Move the zombie as well
-            zombie.move(gameBoard, player.getRow(), player.getCol());
-            zombieImageView.setX(zombie.getCol() * SQUARE + OFFSET);
-            zombieImageView.setY(zombie.getRow() * SQUARE + OFFSET);
-        }
+        // Determine which absolute velocity is greater (x or y)
+        // If x is negative, move player left.  Else if x is positive, move player right.
+        // If y is negative, move player down.  Else if y is positive, move player up.
+        if (absX >= absY) direction = (velocityX < 0) ? "LEFT" : "RIGHT";
+        else direction = (velocityY < 0) ? "DOWN" : "UP";
+
+        player.move(gameBoard, direction);
+        // Move the image view as well
+        playerImageView.setX(player.getCol() * SQUARE + OFFSET);
+        playerImageView.setY(player.getRow() * SQUARE + OFFSET);
+        // Move the zombie as well
+        zombie.move(gameBoard, player.getRow(), player.getCol());
+        zombieImageView.setX(zombie.getCol() * SQUARE + OFFSET);
+        zombieImageView.setY(zombie.getRow() * SQUARE + OFFSET);
 
         // Make 2 decisions:
         // 1) Check to see if Player has reached the exit row and col (WIN)
         // 2) Check to see if Player and Zombie are touching (LOSE)
-
-        // TODO: Determine which absolute velocity is greater (x or y)
-        // TODO: If x is negative, move player left.  Else if x is positive, move player right.
-        // TODO: If y is negative, move player down.  Else if y is positive, move player up.
-
-        // TODO: Then move the zombie, using the player's row and column position.
+        if (player.getCol() == exitCol && player.getRow() == exitRow)
+        {
+            wins++;
+            startNewGame();
+        } else if (player.getCol() == zombie.getCol() && player.getRow() == zombie.getRow())
+        {
+            losses++;
+            startNewGame();
+        }
     }
 
+    /**
+     * Implement this method to handle touch screen motion events.
+     *
+     * @param event The motion event.
+     * @return True if the event was handled, false otherwise.
+     */
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
         return gestureDetector.onTouchEvent(event);
     }
 
+    /**
+     * User made contact with device. Every gesture begins with onDown.
+     *
+     * @param motionEvent The motion event triggering the touch.
+     * @return True if the event was handled, false otherwise.
+     */
     @Override
     public boolean onDown(MotionEvent motionEvent)
     {
         return false;
     }
 
+    /**
+     * Down event where user does not let go, short duration of time.
+     *
+     * @param motionEvent The motion event triggering the touch.
+     */
     @Override
-    public void onShowPress(MotionEvent motionEvent)
-    {
+    public void onShowPress(MotionEvent motionEvent) {}
 
-    }
-
+    /**
+     * Similar to an onSingleTapConfirmed, but it could be part of a double tap.
+     *
+     * @param motionEvent The motion event triggering the touch.
+     * @return True if the event was handled, false otherwise.
+     */
     @Override
     public boolean onSingleTapUp(MotionEvent motionEvent)
     {
         return false;
     }
 
+    /**
+     * Down event, followed by a press and lateral movement, without letting go.
+     *
+     * @param motionEvent  The event where the scroll originated.
+     * @param motionEvent1 The event where the scroll stopped.
+     * @param distanceX    The distance in X direction (pixels).
+     * @param distanceY    The distance in Y direction (pixels).
+     * @return True if the event was handled, false otherwise.
+     */
     @Override
-    public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1)
-    {
-        return false;
-    }
+    public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent1, float distanceX, float distanceY) { return false; }
 
+    /**
+     * Down event, followed by a long hold.
+     *
+     * @param motionEvent The motion event triggering the touch.
+     */
     @Override
-    public void onLongPress(MotionEvent motionEvent)
-    {
+    public void onLongPress(MotionEvent motionEvent) {}
 
-    }
-
+    /**
+     * Similar to a scroll, with faster velocity and user releases contact with device.
+     *
+     * @param motionEvent  The event where the scroll originated.
+     * @param motionEvent1 The event where the scroll stopped.
+     * @param velocityX    Velocity in the X direction.
+     * @param velocityY    Velocity in the Y direction.
+     * @return True if the event was handled, false otherwise.
+     */
     @Override
-    public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1)
+    public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float velocityX, float velocityY)
     {
-        movePlayer(v, v1);
+        movePlayer(velocityX, velocityY);
         return true;
     }
 }
