@@ -21,7 +21,7 @@ import java.util.List;
  * @version 1.0
  * @since November 7, 2017
  */
-public class GameActivity extends AppCompatActivity implements GestureDetector.OnGestureListener
+public class GameActivity extends AppCompatActivity implements GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener
 {
     private GestureDetector gestureDetector;
 
@@ -232,11 +232,14 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
         if (player.getCol() == exitCol && player.getRow() == exitRow)
         {
             wins++;
-            startNewGame();
+            winsTextView.setText(getString(R.string.wins, wins));
+            zombieImageView = (ImageView) layoutInflater.inflate(R.layout.bunny_layout, null);
+            zombieImageView.setX(zombie.getCol() * SQUARE + OFFSET);
+            zombieImageView.setY(zombie.getRow() * SQUARE + OFFSET);
         } else if (player.getCol() == zombie.getCol() && player.getRow() == zombie.getRow())
         {
             losses++;
-            startNewGame();
+            lossesTextView.setText(getString(R.string.losses, losses));
         }
     }
 
@@ -316,7 +319,42 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
     @Override
     public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float velocityX, float velocityY)
     {
-        movePlayer(velocityX, velocityY);
+        // Move only if player not at exit
+        if (player.getCol() != exitCol || player.getRow() != exitRow)
+            movePlayer(velocityX, velocityY);
         return true;
     }
+
+    /**
+     * Handles single-tap gesture. Not part of a double tap.
+     *
+     * @param motionEvent The motion event triggering the touch.
+     * @return True if the event was handled, false otherwise.
+     */
+    @Override
+    public boolean onSingleTapConfirmed(MotionEvent motionEvent)
+    {
+        // Start new game when player is at exit and user taps screen
+        if (player.getRow() == exitRow && player.getCol() == exitCol) startNewGame();
+        return true;
+    }
+
+    /**
+     * Handles double-tap gesture. Double-tap is the succession of two
+     * single tap gestures within a duration.
+     *
+     * @param motionEvent The motion event triggering the touch.
+     * @return True if the event was handled, false otherwise.
+     */
+    @Override
+    public boolean onDoubleTap(MotionEvent motionEvent) { return false; }
+
+    /**
+     * During a double tap, another event occurs (including move)
+     *
+     * @param motionEvent The motion event triggering the touch.
+     * @return True if the event was handled, false otherwise.
+     */
+    @Override
+    public boolean onDoubleTapEvent(MotionEvent motionEvent) { return false; }
 }
