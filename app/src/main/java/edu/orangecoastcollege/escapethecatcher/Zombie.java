@@ -21,9 +21,24 @@ public class Zombie
     public void move(int[][] gameBoard, int playerCol, int playerRow)
     {
         if (mCol < playerCol && gameBoard[mRow][mCol + 1] != BoardCodes.OBSTACLE) mCol++;
+        else if (mCol == playerCol && mRow < playerRow
+                && gameBoard[mRow + 1][mCol] != BoardCodes.OBSTACLE) mRow++;
+        else if (mCol == playerCol && mRow > playerRow
+                && gameBoard[mRow - 1][mCol] != BoardCodes.OBSTACLE) mRow--;
         else if (mCol > playerCol && gameBoard[mRow][mCol - 1] != BoardCodes.OBSTACLE) mCol--;
         else if (mRow < playerRow && gameBoard[mRow + 1][mCol] != BoardCodes.OBSTACLE) mRow++;
-        else if (mRow > playerRow && gameBoard[mRow - 1][mCol] == BoardCodes.OBSTACLE) mRow--;
+        else if (mRow == playerRow && mCol < playerCol
+                && gameBoard[mRow][mCol + 1] != BoardCodes.OBSTACLE) mCol++;
+        else if (mRow == playerRow && mCol > playerCol
+                && gameBoard[mRow][mCol - 1] != BoardCodes.OBSTACLE) mCol--;
+        else if (mRow > playerRow && gameBoard[mRow - 1][mCol] != BoardCodes.OBSTACLE) mRow--;
+        else if (mRow != playerRow || mCol != playerCol)
+        {
+            if (gameBoard[mRow][mCol + 1] != BoardCodes.OBSTACLE) mCol++;
+            else if(gameBoard[mRow][mCol - 1] != BoardCodes.OBSTACLE) mCol--;
+            else if(gameBoard[mRow + 1][mCol] != BoardCodes.OBSTACLE) mRow++;
+            else if(gameBoard[mRow - 1][mCol] != BoardCodes.OBSTACLE) mRow--;
+        }
     }
 
     /**

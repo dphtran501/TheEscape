@@ -222,7 +222,7 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
         playerImageView.setX(player.getCol() * SQUARE + OFFSET);
         playerImageView.setY(player.getRow() * SQUARE + OFFSET);
         // Move the zombie as well
-        zombie.move(gameBoard, player.getRow(), player.getCol());
+        zombie.move(gameBoard, player.getCol(), player.getRow());
         zombieImageView.setX(zombie.getCol() * SQUARE + OFFSET);
         zombieImageView.setY(zombie.getRow() * SQUARE + OFFSET);
 
