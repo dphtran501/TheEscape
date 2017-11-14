@@ -7,6 +7,6 @@
     android:maxHeight="45dp"
     android:maxWidth="45dp"
     android:scaleType="fitCenter"
-    android:src="@drawable/bunny">>
+    android:src="@drawable/bunny">
 
 </ImageView>

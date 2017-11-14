@@ -233,7 +233,11 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
         {
             wins++;
             winsTextView.setText(getString(R.string.wins, wins));
+            activityGameRelativeLayout.removeView(zombieImageView);
+            allGameObjects.remove(zombieImageView);
             zombieImageView = (ImageView) layoutInflater.inflate(R.layout.bunny_layout, null);
+            activityGameRelativeLayout.addView(zombieImageView);
+            allGameObjects.add(zombieImageView);
             zombieImageView.setX(zombie.getCol() * SQUARE + OFFSET);
             zombieImageView.setY(zombie.getRow() * SQUARE + OFFSET);
         } else if (player.getCol() == zombie.getCol() && player.getRow() == zombie.getRow())
@@ -319,8 +323,9 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
     @Override
     public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float velocityX, float velocityY)
     {
-        // Move only if player not at exit
-        if (player.getCol() != exitCol || player.getRow() != exitRow)
+        // Move only if player not at exit or on zombie
+        if ((player.getCol() != exitCol || player.getRow() != exitRow)
+                && (player.getCol() != zombie.getCol() || player.getRow() != zombie.getRow()))
             movePlayer(velocityX, velocityY);
         return true;
     }
@@ -335,7 +340,9 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
     public boolean onSingleTapConfirmed(MotionEvent motionEvent)
     {
         // Start new game when player is at exit and user taps screen
-        if (player.getRow() == exitRow && player.getCol() == exitCol) startNewGame();
+        if ((player.getRow() == exitRow && player.getCol() == exitCol)
+                || (player.getRow() == zombie.getRow() && player.getCol() == zombie.getCol()))
+            startNewGame();
         return true;
     }
 
