@@ -61,6 +61,8 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
 
     private LayoutInflater layoutInflater;
 
+    private boolean isGameWin;
+
     /**
      * Initializes <code>GameActivity</code> by inflating its UI.
      *
@@ -93,14 +95,18 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
     private void startNewGame()
     {
         //TASK 1:  CLEAR THE BOARD (ALL IMAGE VIEWS)
-        /*
-        for (int i = 0; i < allGameObjects.size(); i++) {
-            ImageView visualObj = allGameObjects.get(i);
-            activityGameRelativeLayout.removeView(visualObj);
+        int i = 0;
+        ImageView iv;
+        while (i < allGameObjects.size())
+        {
+            iv = allGameObjects.get(i);
+            if (isGameWin || iv.getTag() == null)
+            {
+                activityGameRelativeLayout.removeView(iv);
+                allGameObjects.remove(iv);
+            }
+            else i++;
         }
-        */
-        for (ImageView iv : allGameObjects) activityGameRelativeLayout.removeView(iv);
-        allGameObjects.clear();
 
         //TASK 2:  REBUILD THE  BOARD
         buildGameBoard();
@@ -111,6 +117,8 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
 
         winsTextView.setText(getString(R.string.wins, wins));
         lossesTextView.setText(getString(R.string.losses, losses));
+
+        isGameWin = false;
     }
 
     /**
@@ -231,8 +239,11 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
         // 2) Check to see if Player and Zombie are touching (LOSE)
         if (player.getCol() == exitCol && player.getRow() == exitRow)
         {
+            isGameWin = true;
+            // Increase number of wins
             wins++;
             winsTextView.setText(getString(R.string.wins, wins));
+            // Change zombie to bunny
             activityGameRelativeLayout.removeView(zombieImageView);
             allGameObjects.remove(zombieImageView);
             zombieImageView = (ImageView) layoutInflater.inflate(R.layout.bunny_layout, null);
@@ -242,8 +253,16 @@ public class GameActivity extends AppCompatActivity implements GestureDetector.O
             zombieImageView.setY(zombie.getRow() * SQUARE + OFFSET);
         } else if (player.getCol() == zombie.getCol() && player.getRow() == zombie.getRow())
         {
+            // Increase number of losses
             losses++;
             lossesTextView.setText(getString(R.string.losses, losses));
+            // Add blood splatter
+            ImageView bloodImageView = (ImageView) layoutInflater.inflate(R.layout.blood_layout, null);
+            bloodImageView.setTag("blood");
+            activityGameRelativeLayout.addView(bloodImageView);
+            allGameObjects.add(bloodImageView);
+            bloodImageView.setX(zombie.getCol() * SQUARE + OFFSET);
+            bloodImageView.setY(zombie.getRow() * SQUARE + OFFSET);
         }
     }
 
